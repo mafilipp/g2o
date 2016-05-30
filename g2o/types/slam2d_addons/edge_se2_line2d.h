@@ -52,6 +52,16 @@ namespace g2o {
         prediction[0] = normalize_theta(prediction[0]);
         Vector2D n(cos(prediction[0]), sin(prediction[0]));
         prediction[1] += n.dot(iT.translation());
+
+				// Filippo: added to always consider a radious r > 0
+				if(prediction[1] < 0)
+				{
+				  //std::cout << "Using correction radius\n";
+					prediction[1] *=-1;
+					prediction[0] += M_PI;
+					prediction[0] = normalize_theta(prediction[0]);
+				}
+
         _error =  prediction - _measurement;
         _error [0] =  normalize_theta(_error[0]);
       }
